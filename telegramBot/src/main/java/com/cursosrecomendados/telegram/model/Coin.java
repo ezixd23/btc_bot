@@ -2,29 +2,24 @@ package com.cursosrecomendados.telegram.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
-import org.springframework.data.annotation.Id;
 
 @Entity
 public class Coin {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@Basic
 	private String name;
+	@Basic
 	private float value;
+	@Basic
+	private String currency;
+	@Basic
+	private float variation;
+	@Basic
 	private LocalDate date;
 	
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
@@ -37,13 +32,22 @@ public class Coin {
 	public void setValue(float value) {
 		this.value = value;
 	}
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+	public float getVariation() {
+		return variation;
+	}
+	public void setVariation(float variation) {
+		this.variation = variation;
+	}
 	public LocalDate getDate() {
 		return date;
 	}
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
-	
-	
-	
 }

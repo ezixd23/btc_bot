@@ -29,12 +29,4 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
           new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
-    @ExceptionHandler({ CoinIdMismatchException.class, 
-      ConstraintViolationException.class, 
-      DataIntegrityViolationException.class })
-    public ResponseEntity<Object> handleBadRequest(
-      Exception ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getLocalizedMessage(), 
-          new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-    }
 }
