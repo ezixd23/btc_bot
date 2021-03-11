@@ -1,11 +1,15 @@
 package com.cursosrecomendados.telegram.handlers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import com.cursosrecomendados.telegram.configuration.BotConfig;
+import com.cursosrecomendados.telegram.service.PoloniexServiceImpl;
 
+@Component
 public class CoinHandlers extends TelegramLongPollingBot{
 	private static final String LOGTAG = "CRYPTOHANDLERS";
 	
@@ -15,6 +19,8 @@ public class CoinHandlers extends TelegramLongPollingBot{
     private static final int SETTINGS = 3;
     private static final int CURRENCY = 4;
 	
+    @Autowired
+    PoloniexServiceImpl poloniex;
     
     public CoinHandlers() {
     	super();

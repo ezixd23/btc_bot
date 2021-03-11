@@ -79,18 +79,12 @@ public class ConnectionDB {
         return max;
     }
 
-    /**
-     * Initilize a transaction in database
-     * @throws SQLException If initialization fails
-     */
+ 
     public void initTransaction() throws SQLException {
         this.currentConection.setAutoCommit(false);
     }
 
-    /**
-     * Finish a transaction in database and commit changes
-     * @throws SQLException If a rollback fails
-     */
+    
     public void commitTransaction() throws SQLException {
         try {
             this.currentConection.commit();
