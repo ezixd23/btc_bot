@@ -258,7 +258,7 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
     
-    public boolean addRecentWeather(Integer userId, Integer coinId, String coinName) {
+    public boolean addRecentCoin(Integer userId, Integer coinId, String coinName) {
         int updatedRows = 0;
         try {
             final PreparedStatement preparedStatement = connetion.getPreparedStatement("REPLACE INTO RecentCoin (userId, cityId, cityName) VALUES(?, ?, ?)");
@@ -272,7 +272,7 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
 
-    public List<String> getRecentWeather(Integer userId) {
+    public List<String> getRecentCoin(Integer userId) {
         List<String> recentWeather = new ArrayList<>();
         try {
             final PreparedStatement preparedStatement = connetion.getPreparedStatement("select * FROM RecentCoin WHERE userId=? order by date desc");
@@ -374,7 +374,7 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
     
-    public int getCoinrState(Integer userId, Long chatId) {
+    public int getCoinState(Integer userId, Long chatId) {
         int state = 0;
         try {
             final PreparedStatement preparedStatement = connetion.getPreparedStatement("SELECT state FROM CoinState WHERE userId = ? AND chatId = ?");
