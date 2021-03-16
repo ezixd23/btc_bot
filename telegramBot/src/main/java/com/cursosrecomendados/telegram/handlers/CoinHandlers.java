@@ -25,17 +25,14 @@ public class CoinHandlers extends TelegramLongPollingBot{
 	private static final String LOGTAG = "CRYPTOHANDLERS";
 	
 	private static final int STARTSTATE = 0;
-    private static final int MAINMENU = 1;
     private static final int COININFO = 2;
-    private static final int SETTINGS = 3;
-    private static final int CURRENCY = 4;
+    private static final int CURRENCY = 3;
+    private static final int LANGUAGE = 4;
 	
     @Autowired
 	static
     PoloniexServiceImpl poloniex;
-    @Autowired
-	static
-    PoloniexPair btc_pasc;
+
     
     public CoinHandlers() {
     	super();
@@ -78,20 +75,17 @@ public class CoinHandlers extends TelegramLongPollingBot{
         }
         SendMessage sendMessageRequest=null;
         switch(state) {
-            case MAINMENU:
-               // sendMessageRequest = messageOnMainMenu(message, language);
-                break;
             case COININFO:
                 sendMessageRequest = messageOnCoin(message, language, state);
-                break;
-            case SETTINGS:
-                //sendMessageRequest = messageOnSetting(message, language);
                 break;
             case CURRENCY:
                // sendMessageRequest = messageOnCurrency(message, language);
                 break;
+            case LANGUAGE:
+                //sendMessageRequest = messageOnLanguage(message, language);
+                break;
             default:
-                //sendMessageRequest = sendMessageDefault(message, language);
+                sendMessageRequest = sendMessageDefault(message, language);
                 break;
         }
 
@@ -130,7 +124,7 @@ public class CoinHandlers extends TelegramLongPollingBot{
         if (message.isReply()) {
             return onCoinReceived(message.getChatId(), message.getFrom().getId(), message.getMessageId(), message.getText(), language);
         } else {
-            return null;
+        	return sendMessageDefault(message, language);
         }
     }
     
@@ -150,6 +144,28 @@ public class CoinHandlers extends TelegramLongPollingBot{
         return replyKeyboardMarkup;
     }
     
+   /* 
+    * TODO
+    * private static ReplyKeyboardMarkup getSettingsKeyboard(String language) {
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        keyboardFirstRow.add(getLanguagesCommand(language));
+        keyboardFirstRow.add(getUnitsCommand(language));
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        keyboardSecondRow.add(getAlertsCommand(language));
+        keyboardSecondRow.add(getBackCommand(language));
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
+        replyKeyboardMarkup.setKeyboard(keyboard);
+
+        return replyKeyboardMarkup;
+    }*/
+    
     private static String getSettingsCommand(String language) {
         return String.format(LanguagesService.getString("settings", language));
     }
@@ -160,31 +176,27 @@ public class CoinHandlers extends TelegramLongPollingBot{
     
     private static SendMessage sendMessageDefault(Message message, String language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = getMainMenuKeyboard(language);
-        DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(), MAINMENU);
+        DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(), 1);
         return sendHelpMessage(message.getChatId(), message.getMessageId(), replyKeyboardMarkup, language);
     }
     
     private static SendMessage onCoinReceived(Long chatId, Integer userId, Integer messageId, String text, String language) {
-        String unitsSystem = DatabaseManager.getInstance().getUserCoinOptions(userId)[1];
-        OrderCoin coin = null;
-        switch(text) {
-        	case "BTC_PASC":
-        		 coin = poloniex.getOrderBook(btc_pasc.BTC_PASC);
-        		break;
-        	case "BTC_LTC":
-        		 coin = poloniex.getOrderBook(btc_pasc.BTC_LTC);
-        		break;
-        	case "BTC_BBR":
-        		 coin = poloniex.getOrderBook(btc_pasc.BTC_BBR);
-        		break;
+        PoloniexPair valor=null;
+    	try {
+        	valor = PoloniexPair.valueOf(text);
+        }catch(Exception e) {
+        	valor = PoloniexPair.BTC_PASC;
         }
+    	
+    	PriceInfo coin = poloniex.getOrderBook(valor);
+        
         SendMessage sendMessageRequest = new SendMessage();
         sendMessageRequest.enableMarkdown(true);
         sendMessageRequest.setReplyMarkup(getMainMenuKeyboard(language));
         sendMessageRequest.setReplyToMessageId(messageId);
         sendMessageRequest.setText(coin.toString());
         sendMessageRequest.setChatId(chatId.toString());
-        DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
+        DatabaseManager.getInstance().insertCoinState(userId, chatId, 1);
        return sendMessageRequest;
     }
     
@@ -204,4 +216,69 @@ public class CoinHandlers extends TelegramLongPollingBot{
         String baseString = LanguagesService.getString("helpWeatherMessage", language);
         return baseString;
     }
+    
+    /*
+     * 
+     * TODO
+    private static SendMessage messageOnUnits(Message message, String language) {
+        SendMessage sendMessageRequest = null;
+        if (message.hasText()) {
+            if (message.getText().trim().equals(getCancelCommand(language))) {
+                sendMessageRequest = onBackCurrencyCommand(message, language);
+            } else if (message.getText().trim().equals(LanguagesService.getString("dollar", language))) {
+                sendMessageRequest = onCurrencyChosen(message.getFrom().getId(), message.getChatId(),
+                        message.getMessageId(), PoloniexServiceImpl.DOLLAR, language);
+            } else if (message.getText().trim().equals(LanguagesService.getString("euro", language))) {
+                sendMessageRequest = onCurrencyChosen(message.getFrom().getId(), message.getChatId(),
+                        message.getMessageId(), PoloniexServiceImpl.EURO, language);
+            } else {
+                sendMessageRequest = onCurrencyError(message.getChatId(), message.getMessageId(), language);
+            }
+        }
+        return sendMessageRequest;
+    }
+    
+    private static SendMessage onBackCurrencyCommand(Message message, String language) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = getSettingsKeyboard(language);
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        sendMessage.setReplyToMessageId(message.getMessageId());
+        sendMessage.setChatId(message.getChatId());
+        sendMessage.setText(getSettingsMessage(language));
+
+        DatabaseManager.getInstance().insertWeatherState(message.getFrom().getId(), message.getChatId(), SETTINGS);
+        return sendMessage;
+    }
+	
+    private static SendMessage onCurrencyError(Long chatId, Integer messageId, String language) {
+        SendMessage sendMessageRequest = new SendMessage();
+        sendMessageRequest.enableMarkdown(true);
+        sendMessageRequest.setChatId(chatId.toString());
+        sendMessageRequest.setReplyMarkup(getCurrencyKeyboard(language));
+        sendMessageRequest.setText(LanguagesService.getString("errorUnitsNotFound", language));
+        sendMessageRequest.setReplyToMessageId(messageId);
+
+        return sendMessageRequest;
+    }
+	*/
+    private static SendMessage onCurrencyChosen(Integer userId, Long chatId, Integer messageId, String units, String language) {
+        DatabaseManager.getInstance().putUserWeatherUnitsOption(userId, units);
+
+        SendMessage sendMessageRequest = new SendMessage();
+        sendMessageRequest.enableMarkdown(true);
+        sendMessageRequest.setChatId(chatId.toString());
+        sendMessageRequest.setText(LanguagesService.getString("unitsUpdated", language));
+        sendMessageRequest.setReplyToMessageId(messageId);
+        sendMessageRequest.setReplyMarkup(getMainMenuKeyboard(language));
+
+        DatabaseManager.getInstance().insertCoinState(userId, chatId, 1);
+        return sendMessageRequest;
+    }
+    
+    private static String getCancelCommand(String language) {
+        return LanguagesService.getString("cancel", language);
+    }
+    
 }
