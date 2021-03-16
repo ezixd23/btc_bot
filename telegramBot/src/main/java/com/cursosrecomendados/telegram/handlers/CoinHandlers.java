@@ -3,6 +3,7 @@ package com.cursosrecomendados.telegram.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cursosrecomendados.telegram.mappers.PriceInfoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -30,9 +31,10 @@ public class CoinHandlers extends TelegramLongPollingBot{
     private static final int LANGUAGE = 4;
 	
     @Autowired
-	static
-    PoloniexServiceImpl poloniex;
+	static PoloniexServiceImpl poloniex;
 
+    @Autowired
+    static PriceInfoConverter converter;
     
     public CoinHandlers() {
     	super();
@@ -188,8 +190,12 @@ public class CoinHandlers extends TelegramLongPollingBot{
         	valor = PoloniexPair.BTC_PASC;
         }
     	
-    	PriceInfo coin = poloniex.getOrderBook(valor);
-        
+    	OrderBook coin = poloniex.getOrderBook(valor);
+        //TODO
+        // Aqui has de covertir OrderBook en PriceInfo, guardar el PriceInfo a la Base de dades i retornar el
+        // valor
+        PriceInfo priceInfo= converter.convert(valor, coin);
+
         SendMessage sendMessageRequest = new SendMessage();
         sendMessageRequest.enableMarkdown(true);
         sendMessageRequest.setReplyMarkup(getMainMenuKeyboard(language));
