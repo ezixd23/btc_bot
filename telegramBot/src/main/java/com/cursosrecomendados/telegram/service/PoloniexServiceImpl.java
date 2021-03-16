@@ -28,9 +28,6 @@ public class PoloniexServiceImpl  {
 	@Value("${poloniex.public.orderbook}")
 	String poloniexPublicOrderBookCommand;
 	
-	@Autowired
-	CloseableHttpClient httpClient;
-	
 	RestTemplate restTemplate = restTemplate();
 	
 	public static final String DOLLAR = "dollar";
@@ -48,7 +45,6 @@ public class PoloniexServiceImpl  {
 	    HttpComponentsClientHttpRequestFactory clientHttpRequestFactory
 	      = new HttpComponentsClientHttpRequestFactory();
 	    clientHttpRequestFactory.setConnectTimeout(poloniexTimeout==null? 5000: poloniexTimeout);
-	    clientHttpRequestFactory.setHttpClient(httpClient);
 	    return clientHttpRequestFactory;
 	}
 	
