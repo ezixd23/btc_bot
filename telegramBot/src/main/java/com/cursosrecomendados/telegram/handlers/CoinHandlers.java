@@ -173,7 +173,7 @@ public class CoinHandlers extends TelegramLongPollingBot{
         sendMessageRequest.setReplyToMessageId(messageId);
         sendMessageRequest.setText(priceInfo.toString());
         sendMessageRequest.setChatId(chatId.toString());
-        DatabaseManager.getInstance().insertCoinState(userId, chatId, 1);
+        DatabaseManager.getInstance().insertCoinState(userId, chatId, 1, priceInfo);
        return sendMessageRequest;
     }
     
