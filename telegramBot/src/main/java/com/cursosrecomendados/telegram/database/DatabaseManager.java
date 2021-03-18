@@ -392,14 +392,13 @@ public class DatabaseManager {
         return state;
     }
 
-    public boolean insertCoinState(Integer userId, Long chatId, int state, PriceInfo priceinfo) {
+    public boolean insertCoinState(Integer userId, Long chatId, int state) {
         int updatedRows = 0;
         try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("REPLACE INTO CoinState (userId, chatId, state) VALUES (?, ?, ?, ?)");
+            final PreparedStatement preparedStatement = connetion.getPreparedStatement("REPLACE INTO CoinState (userId, chatId, state) VALUES (?, ?, ?)");
             preparedStatement.setInt(1, userId);
             preparedStatement.setLong(2, chatId);
             preparedStatement.setInt(3, state);
-            preparedStatement.setString(4, priceinfo.toString());
             updatedRows = preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
