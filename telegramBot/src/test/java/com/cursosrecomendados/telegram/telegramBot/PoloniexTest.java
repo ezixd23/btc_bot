@@ -7,6 +7,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.cursosrecomendados.telegram.model.PoloniexPair;
+import com.cursosrecomendados.telegram.model.PriceInfo;
+import com.cursosrecomendados.telegram.mappers.PriceInfoConverter;
 import com.cursosrecomendados.telegram.model.OrderBook;
 import com.cursosrecomendados.telegram.service.PoloniexServiceImpl;
 import org.springframework.core.io.ClassPathResource;
@@ -31,7 +33,9 @@ public class PoloniexTest {
 	String poloniexPublicOrderBookCommand;
 
 	PoloniexServiceImpl poloniexService;
-
+	
+	PriceInfoConverter converter;
+	
 	@BeforeEach
 	public void setUp() throws Exception {
 		Properties configProps = readProperties();
@@ -41,9 +45,11 @@ public class PoloniexTest {
 	@Test
 	public void testGetOrderBook() throws Exception {
 		OrderBook result = poloniexService.getOrderBook(PoloniexPair.BTC_LTC);
-		Assertions.assertNotNull(result);
+		PriceInfo priceInfo = converter.convert(PoloniexPair.BTC_LTC,result);
+		Assertions.assertNotNull(priceInfo);
 	}
-
+	
+ 
 
 	private Properties readProperties() throws IOException {
 		Properties configProps = new Properties();

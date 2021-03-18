@@ -1,4 +1,4 @@
-package com.cursosrecomendados.telegram1;
+package com.cursosrecomendados.telegram;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
