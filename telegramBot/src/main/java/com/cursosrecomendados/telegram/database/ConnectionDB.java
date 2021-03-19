@@ -23,7 +23,7 @@ public class ConnectionDB {
         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/crypto","root","karrabi23");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/crypto?&useUnicode=true&characterEncoding=UTF-8","root","karrabi23");
         } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             BotLogger.error(LOGTAG, e);
         }
