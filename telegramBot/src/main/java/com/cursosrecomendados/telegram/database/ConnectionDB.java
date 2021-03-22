@@ -11,6 +11,8 @@ import java.sql.Statement;
 
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
+import com.cursosrecomendados.telegram.configuration.JpaConfiguration;
+
 public class ConnectionDB {
     private static final String LOGTAG = "CONNECTIONDB";
     private Connection currentConection;
@@ -20,11 +22,11 @@ public class ConnectionDB {
     }
 
     private Connection openConexion()  {
+    	JpaConfiguration config = new JpaConfiguration();
         Connection connection = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/crypto?&useUnicode=true&characterEncoding=UTF-8","root","karrabi23");
-        } catch (SQLException | ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+        	connection = config.dataSource().getConnection();
+        } catch (SQLException e) {
             BotLogger.error(LOGTAG, e);
         }
 
