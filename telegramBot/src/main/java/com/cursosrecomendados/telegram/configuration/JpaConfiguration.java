@@ -17,26 +17,14 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 @Configuration
 @EnableJpaRepositories("packages.to.scan")
 public class JpaConfiguration {
-    @Value("${spring.datasource.driver-class-name}")
-	String springDriver;
-	
-	@Value("${spring.datasource.url}")
-	String springUrl;
-	
-	@Value("${spring.datasource.username}")
-	String springName;
-	
-	@Value("${spring.datasource.password}")
-	String springPass;
-	
-	
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(springDriver);
-        dataSource.setUrl(springUrl);
-        dataSource.setUsername(springName);
-        dataSource.setPassword(springPass);
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/crypto?&useUnicode=true&characterEncoding=UTF-8&useSSL=false");
+        dataSource.setUsername("username");
+        dataSource.setPassword("pa$$wOrd23");
         return dataSource;
     }
 

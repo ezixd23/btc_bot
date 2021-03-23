@@ -103,7 +103,7 @@ public class CoinHandlers extends TelegramLongPollingBot{
 	
     private static boolean isCommandForOther(String text) {
         boolean isSimpleCommand = text.equals("/start") || text.equals("/help") || text.equals("/stop");
-        boolean isCommandForMe = text.equals("/start@weatherbot") || text.equals("/help@weatherbot") || text.equals("/stop@weatherbot");
+        boolean isCommandForMe = text.equals("/start@CoinInfo21_bot") || text.equals("/help@CoinInfo21_bot") || text.equals("/stop@CoinInfo21_bot");
         return text.startsWith("/") && !isSimpleCommand && !isCommandForMe;
     }
     
@@ -130,23 +130,23 @@ public class CoinHandlers extends TelegramLongPollingBot{
 
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow keyboardFirstRow = new KeyboardRow();
-        keyboardFirstRow.add(getCoinCommand(language));
-        keyboardFirstRow.add(getSettingsCommand(language));
+        keyboardFirstRow.add("Coin");
+        keyboardFirstRow.add("Settings");
         keyboard.add(keyboardFirstRow);
         replyKeyboardMarkup.setKeyboard(keyboard);
 
         return replyKeyboardMarkup;
     }
     
-    
+  /*  
     private static String getSettingsCommand(String language) {
-        return String.format(LanguagesService.getString("settings", language));
+        return LanguagesService.getString("settings", language);
     }
     
     private static String getCoinCommand(String language) {
-        return String.format(LanguagesService.getString("coin", language));
+        return LanguagesService.getString("coin", language);
     }
-    
+    */
     private static SendMessage sendMessageDefault(Message message, String language) {
         ReplyKeyboardMarkup replyKeyboardMarkup = getMainMenuKeyboard(language);
         DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(), 1);
@@ -185,23 +185,22 @@ public class CoinHandlers extends TelegramLongPollingBot{
         if (replyKeyboardMarkup != null) {
             sendMessage.setReplyMarkup(replyKeyboardMarkup);
         }
-        sendMessage.setText(getHelpMessage(language));
+        sendMessage.setText("Help");
         return sendMessage;
     }
-    
+    /*
     private static String getHelpMessage(String language) {
-        String baseString = LanguagesService.getString("helpWeatherMessage", language);
+        String baseString = LanguagesService.getString("helpCoinMessage", language);
         return baseString;
     }
     
-
     private static SendMessage onCurrencyChosen(Integer userId, Long chatId, Integer messageId, String units, String language) {
         DatabaseManager.getInstance().putUserWeatherUnitsOption(userId, units);
 
         SendMessage sendMessageRequest = new SendMessage();
         sendMessageRequest.enableMarkdown(true);
         sendMessageRequest.setChatId(chatId.toString());
-        sendMessageRequest.setText(LanguagesService.getString("unitsUpdated", language));
+        sendMessageRequest.setText(LanguagesService.getString("currencyUpdated", language));
         sendMessageRequest.setReplyToMessageId(messageId);
         sendMessageRequest.setReplyMarkup(getMainMenuKeyboard(language));
 
@@ -212,5 +211,5 @@ public class CoinHandlers extends TelegramLongPollingBot{
     private static String getCancelCommand(String language) {
         return LanguagesService.getString("cancel", language);
     }
-    
+    */
 }

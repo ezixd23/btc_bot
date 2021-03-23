@@ -31,12 +31,7 @@ public class LanguagesService {
         }
     }
 
-    /**
-     * Get a string in default language (en)
-     *
-     * @param key key of the resource to fetch
-     * @return fetched string or error message otherwise
-     */
+    
     public static String getString(String key) {
         String result;
         try {
@@ -48,12 +43,7 @@ public class LanguagesService {
         return result;
     }
 
-    /**
-     * Get a string in default language
-     *
-     * @param key key of the resource to fetch
-     * @return fetched string or error message otherwise
-     */
+
     public static String getString(String key, String language) {
         String result;
         try {
@@ -92,7 +82,6 @@ public class LanguagesService {
     public static class Language {
         private String code;
         private String name;
-        private String emoji;
 
         public Language(String code, String name) {
             this.code = code;
@@ -117,11 +106,7 @@ public class LanguagesService {
 
         @Override
         public String toString() {
-            if (emoji == null || emoji.isEmpty()) {
-                return name;
-            } else {
-                return emoji + " " + name;
-            }
+            return name;
         }
     }
 
