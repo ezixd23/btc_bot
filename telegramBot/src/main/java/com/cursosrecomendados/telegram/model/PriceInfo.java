@@ -79,6 +79,13 @@ public class PriceInfo extends BaseEntity {
 	public void setPriceBid(BigDecimal priceBid) {
 		this.priceBid = priceBid;
 	}
+
+	@Override
+	public String toString() {
+		return "PriceInfo [Price Ask=" + getPriceAsk() + ", Price Bid=" + getPriceBid() + "]";
+	}
+	
+	
 }
 
 

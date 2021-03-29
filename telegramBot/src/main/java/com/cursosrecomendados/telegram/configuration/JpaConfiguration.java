@@ -22,7 +22,7 @@ public class JpaConfiguration {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/crypto?&useUnicode=true&characterEncoding=UTF-8&useSSL=false");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/crypto?&useUnicode=true&characterEncoding=UTF-8&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
         dataSource.setUsername("username");
         dataSource.setPassword("pa$$wOrd23");
         return dataSource;

@@ -431,7 +431,7 @@ public class DatabaseManager {
             final ResultSet result = preparedStatement.executeQuery();
             if (result.next()) {
                 options[0] = result.getString("languageCode");
-                options[1] = result.getString("units");
+                options[1] = result.getString("currency");
             } else {
                 addNewUserWeatherOptions(userId);
             }

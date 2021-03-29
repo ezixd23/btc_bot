@@ -36,6 +36,8 @@ public class CoinHandlers extends TelegramLongPollingBot{
     
     public CoinHandlers() {
     	super();
+    	converter = new PriceInfoConverter();
+    	poloniex = new PoloniexServiceImpl();
     }
     
     @Override
@@ -73,7 +75,8 @@ public class CoinHandlers extends TelegramLongPollingBot{
                 return;
             }
         }
-        SendMessage sendMessageRequest=null;
+        SendMessage sendMessageRequest = messageOnCoin(message, language);
+       /*
         switch(state) {
             case COININFO:
                 sendMessageRequest = messageOnCoin(message, language, state);
@@ -82,7 +85,7 @@ public class CoinHandlers extends TelegramLongPollingBot{
                 sendMessageRequest = sendMessageDefault(message, language);
                 break;
         }
-
+        */
         execute(sendMessageRequest);
     }
 	
@@ -107,19 +110,18 @@ public class CoinHandlers extends TelegramLongPollingBot{
         return text.startsWith("/") && !isSimpleCommand && !isCommandForMe;
     }
     
-    private static SendMessage messageOnCoin(Message message, String language, int state) {
-        SendMessage sendMessageRequest = null;
-        sendMessageRequest = onNewCoin(message, language);
+    private static SendMessage messageOnCoin(Message message, String language) {
+        SendMessage sendMessageRequest = onNewCoin(message, language);
         
         return sendMessageRequest;
     }
     
     private static SendMessage onNewCoin(Message message, String language) {
-        if (message.isReply()) {
+        //if (message.isReply()) {
             return onCoinReceived(message.getChatId(), message.getFrom().getId(), message.getMessageId(), message.getText(), language);
-        } else {
+       /* } else {
         	return sendMessageDefault(message, language);
-        }
+        }*/
     }
     
     private static ReplyKeyboardMarkup getMainMenuKeyboard(String language) {
@@ -158,7 +160,7 @@ public class CoinHandlers extends TelegramLongPollingBot{
     	try {
         	valor = PoloniexPair.valueOf(text);
         }catch(Exception e) {
-        	valor = PoloniexPair.BTC_PASC;
+        	valor = PoloniexPair.BTC_LTC;
         }
     	
     	OrderBook coin = poloniex.getOrderBook(valor);
