@@ -18,14 +18,14 @@ public class PoloniexServiceImpl  {
 	
 	private static Logger logger = LoggerFactory.getLogger(PoloniexServiceImpl.class);
 
-	@Value("${poloniex.public.timeout:5000}")
-	Integer poloniexTimeout;	
+	//@Value("${poloniex.public.timeout:5000}")
+	Integer poloniexTimeout=1000;	
 	
-	@Value("${poloniex.public.url}")
-	String poloniexPublicUrl;
+	//@Value("${poloniex.public.url}")
+	String poloniexPublicUrl="https://poloniex.com/public?command=";
 	
-	@Value("${poloniex.public.orderbook}")
-	String poloniexPublicOrderBookCommand;
+	//@Value("${poloniex.public.orderbook}")
+	String poloniexPublicOrderBookCommand="returnOrderBook&currencyPair=";
 	
 	RestTemplate restTemplate = restTemplate();
 	

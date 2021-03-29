@@ -36,13 +36,14 @@ public class CoinHandlers extends TelegramLongPollingBot{
     
     public CoinHandlers() {
     	super();
+    	converter = new PriceInfoConverter();
+    	poloniex = new PoloniexServiceImpl();
     }
     
     @Override
 	public void onUpdateReceived(Update update) {
     	try {
             if (update.hasMessage()) {
-            	poloniex = new PoloniexServiceImpl();
                 Message message = update.getMessage();
                 if (message.hasText() || message.hasLocation()) {
                     handleIncomingMessage(message);
@@ -159,7 +160,7 @@ public class CoinHandlers extends TelegramLongPollingBot{
     	try {
         	valor = PoloniexPair.valueOf(text);
         }catch(Exception e) {
-        	valor = PoloniexPair.BTC_PASC;
+        	valor = PoloniexPair.BTC_LTC;
         }
     	
     	OrderBook coin = poloniex.getOrderBook(valor);
