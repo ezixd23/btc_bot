@@ -573,3 +573,32 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
 	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
 [29_3_2021_11:21:15] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_9:52:44] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_11:22:26] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_11:31:13] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_11:32:59] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_11:34:2] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:11:53] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:15:35] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:20:53] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:22:8] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:27:10] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:27:33] {SEVERE} CRYPTOHANDLERS - java.util.FormatFlagsConversionMismatchException: Conversion = s, Flags =  
+	at java.base/java.util.Formatter$FormatSpecifier.failMismatch(Formatter.java:4422)
+	at java.base/java.util.Formatter$FormatSpecifier.checkBadFlags(Formatter.java:3151)
+	at java.base/java.util.Formatter$FormatSpecifier.checkGeneral(Formatter.java:3109)
+	at java.base/java.util.Formatter$FormatSpecifier.<init>(Formatter.java:2870)
+	at java.base/java.util.Formatter.parse(Formatter.java:2713)
+	at java.base/java.util.Formatter.format(Formatter.java:2655)
+	at java.base/java.util.Formatter.format(Formatter.java:2609)
+	at java.base/java.lang.String.format(String.java:3302)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.getLanguageMessage(CoinHandlers.java:395)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onLanguageCommand(CoinHandlers.java:374)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnSetting(CoinHandlers.java:261)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:96)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:58)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[13_4_2021_12:54:14] {INFO} DATABASEMANAGER - Current db version: 0
+[13_4_2021_12:59:34] {INFO} DATABASEMANAGER - Current db version: 0

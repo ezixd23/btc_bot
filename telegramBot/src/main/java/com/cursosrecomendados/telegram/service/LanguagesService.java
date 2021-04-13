@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 import java.util.ResourceBundle.Control;
 
 public class LanguagesService {
-	private static final String STRINGS_FILE = "strings";
+	private static final String STRINGS_FILE = "string";
     private static final Object lock = new Object();
 
     private static final List<Language> supportedLanguages = new ArrayList<>();
