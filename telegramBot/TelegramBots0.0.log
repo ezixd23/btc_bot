@@ -602,3 +602,43 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
 [13_4_2021_12:54:14] {INFO} DATABASEMANAGER - Current db version: 0
 [13_4_2021_12:59:34] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_10:26:38] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_10:30:40] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_10:31:14] {SEVERE} CRYPTOHANDLERS - java.lang.NullPointerException: Cannot invoke "com.cursosrecomendados.telegram.model.OrderBook.getAsks()" because "orderBook" is null
+	at com.cursosrecomendados.telegram.mappers.PriceInfoConverter.convert(PriceInfoConverter.java:18)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onCoinReceived(CoinHandlers.java:301)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onNewCoin(CoinHandlers.java:139)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnCoin(CoinHandlers.java:132)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:93)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:58)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[14_4_2021_10:37:47] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_10:38:15] {SEVERE} CRYPTOHANDLERS - java.lang.NullPointerException: Cannot invoke "com.cursosrecomendados.telegram.model.OrderBook.getAsks()" because "orderBook" is null
+	at com.cursosrecomendados.telegram.mappers.PriceInfoConverter.convert(PriceInfoConverter.java:18)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onCoinReceived(CoinHandlers.java:301)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onNewCoin(CoinHandlers.java:139)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnCoin(CoinHandlers.java:132)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:93)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:58)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[14_4_2021_10:56:29] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_10:57:7] {SEVERE} CRYPTOHANDLERS - java.lang.NullPointerException: Cannot invoke "com.cursosrecomendados.telegram.model.OrderBook.getAsks()" because "orderBook" is null
+	at com.cursosrecomendados.telegram.mappers.PriceInfoConverter.convert(PriceInfoConverter.java:18)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onCoinReceived(CoinHandlers.java:356)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onNewCoin(CoinHandlers.java:188)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnCoin(CoinHandlers.java:153)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:108)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:60)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[14_4_2021_11:21:7] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_11:23:12] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_11:57:55] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_12:18:9] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_12:56:29] {INFO} DATABASEMANAGER - Current db version: 0
+[14_4_2021_13:0:52] {INFO} DATABASEMANAGER - Current db version: 0

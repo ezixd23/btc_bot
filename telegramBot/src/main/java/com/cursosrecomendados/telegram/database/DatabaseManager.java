@@ -10,8 +10,6 @@ import java.util.List;
 
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
-import com.cursosrecomendados.telegram.model.PriceInfo;
-
 public class DatabaseManager {
 	private static final String LOGTAG = "DATABASEMANAGER";
 
@@ -84,7 +82,6 @@ public class DatabaseManager {
     }
 
     private int updateToVersion3() throws SQLException {
-        connetion.executeQuery(CreationTables.createDirectionsDatabase);
         connetion.executeQuery(String.format(CreationTables.insertCurrentVersion, 3));
         return 3;
     }
@@ -107,7 +104,7 @@ public class DatabaseManager {
     }
 
     private int updateToVersion7() throws SQLException {
-        connetion.executeQuery("ALTER TABLE WeatherState MODIFY chatId BIGINT NOT NULL");
+        connetion.executeQuery("ALTER TABLE CoinState MODIFY chatId BIGINT NOT NULL");
         connetion.executeQuery(String.format(CreationTables.insertCurrentVersion, 7));
         return 7;
     }
@@ -120,11 +117,8 @@ public class DatabaseManager {
 
     private int createNewTables() throws SQLException {
         connetion.executeQuery(CreationTables.createVersionTable);
-        connetion.executeQuery(CreationTables.createFilesTable);
         connetion.executeQuery(String.format(CreationTables.insertCurrentVersion, CreationTables.version));
-        connetion.executeQuery(CreationTables.createUsersForFilesTable);
         connetion.executeQuery(CreationTables.createRecentCoinTable);
-        connetion.executeQuery(CreationTables.createDirectionsDatabase);
         connetion.executeQuery(CreationTables.createUserLanguageDatabase);
         connetion.executeQuery(CreationTables.createCoinStateTable);
         connetion.executeQuery(CreationTables.createUserCoinOptionDatabase);
@@ -263,7 +257,7 @@ public class DatabaseManager {
     public boolean addRecentCoin(Integer userId, Integer coinId, String coinName) {
         int updatedRows = 0;
         try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("REPLACE INTO RecentCoin (userId, cityId, cityName) VALUES(?, ?, ?)");
+            final PreparedStatement preparedStatement = connetion.getPreparedStatement("INSERT INTO RecentCoin (userId, cityId, cityName) VALUES(?, ?, ?)");
             preparedStatement.setInt(1, userId);
             preparedStatement.setInt(2, coinId);
             preparedStatement.setString(3, coinName);
@@ -281,7 +275,7 @@ public class DatabaseManager {
             preparedStatement.setInt(1, userId);
             final ResultSet result = preparedStatement.executeQuery();
             while (result.next()) {
-                recentWeather.add(result.getString("cityName"));
+                recentWeather.add(result.getString("coinName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -289,65 +283,7 @@ public class DatabaseManager {
 
         return recentWeather;
     }
-    
-    public int getUserDestinationStatus(Integer userId) {
-        int status = -1;
-        try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("SELECT status FROM Directions WHERE userId = ?");
-            preparedStatement.setInt(1, userId);
-            final ResultSet result = preparedStatement.executeQuery();
-            if (result.next()) {
-                status = result.getInt("status");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return status;
-    }
-    
-    public int getUserDestinationMessageId(Integer userId) {
-        int messageId = 0;
-        try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("SELECT messageId FROM Directions WHERE userId = ?");
-            preparedStatement.setInt(1, userId);
-            final ResultSet result = preparedStatement.executeQuery();
-            if (result.next()) {
-                messageId = result.getInt("messageId");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return messageId;
-    }
-
-    public String getUserOrigin(Integer userId) {
-        String origin = "";
-        try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("SELECT origin FROM Directions WHERE userId = ?");
-            preparedStatement.setInt(1, userId);
-            final ResultSet result = preparedStatement.executeQuery();
-            if (result.next()) {
-                origin = result.getString("origin");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return origin;
-    }
-
-    public boolean deleteUserForDirections(Integer userId) {
-        int updatedRows = 0;
-        try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("DELETE FROM Directions WHERE userId=?;");
-            preparedStatement.setInt(1, userId);
-
-            updatedRows = preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return updatedRows > 0;
-    }
-    
+       
     public String getUserLanguage(Integer userId) {
         String languageCode = "en";
         try {
@@ -406,22 +342,6 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
 
-    public Integer getRecentCoinId(Integer userId, String coin) {
-        Integer coinId = -1;
-        try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("select coinId FROM RecentCoin WHERE userId=? AND coinName=?");
-            preparedStatement.setInt(1, userId);
-            preparedStatement.setString(2, coin);
-            final ResultSet result = preparedStatement.executeQuery();
-            if (result.next()) {
-                coinId = result.getInt("cityId");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return coinId;
-    }
     
     public String[] getUserCoinOptions(Integer userId) {
         String[] options = new String[] {"en", "USD"};
@@ -433,7 +353,7 @@ public class DatabaseManager {
                 options[0] = result.getString("languageCode");
                 options[1] = result.getString("currency");
             } else {
-                addNewUserWeatherOptions(userId);
+                addNewUserCoinOptions(userId);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -441,7 +361,7 @@ public class DatabaseManager {
         return options;
     }
 
-    private boolean addNewUserWeatherOptions(Integer userId) {
+    private boolean addNewUserCoinOptions(Integer userId) {
         int updatedRows = 0;
         try {
             final PreparedStatement preparedStatement = connetion.getPreparedStatement("REPLACE INTO UserCoinOptions(userId) VALUES (?)");
@@ -453,7 +373,7 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
 
-    public boolean putUserWeatherLanguageOption(Integer userId, String language) {
+    public boolean putUserCoinLanguageOption(Integer userId, String language) {
         int updatedRows = 0;
         try {
             final PreparedStatement preparedStatement = connetion.getPreparedStatement("UPDATE UserCoinOptions SET languageCode = ? WHERE userId = ?");
@@ -466,10 +386,10 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
 
-    public boolean putUserWeatherUnitsOption(Integer userId, String currency) {
+    public boolean putUserCurrencyOption(Integer userId, String currency) {
         int updatedRows = 0;
         try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("UPDATE UserCoinrOptions SET currency = ? WHERE userId = ?");
+            final PreparedStatement preparedStatement = connetion.getPreparedStatement("UPDATE UserCoinOptions SET currency = ? WHERE userId = ?");
             preparedStatement.setString(1, currency);
             preparedStatement.setInt(2, userId);
             updatedRows = preparedStatement.executeUpdate();
