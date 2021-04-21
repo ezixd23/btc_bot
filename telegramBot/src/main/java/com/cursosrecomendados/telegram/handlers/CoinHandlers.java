@@ -159,9 +159,11 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	private static SendMessage onCoin(Message message, String language) {
         SendMessage sendMessageRequest = null;
         if (message.hasText()) {
-            if (message.getText().startsWith(getNewCommand(language))) {
+            if (message.getText().equals(getNewCommand(language))) {
                 sendMessageRequest = onNewForecastWeatherCommand(message.getChatId(), message.getFrom().getId(), message.getMessageId(), language);
-            } else{
+            }else if(message.getText().equals(getNews(language))) {
+            	sendMessageRequest = onNews(message.getChatId(), message.getFrom().getId(), message.getMessageId(), language);
+            }else{
                 sendMessageRequest = onCancelCommand(message.getChatId(), message.getFrom().getId(), message.getMessageId(),
                         getMainMenuKeyboard(language), language);
             }
@@ -180,6 +182,19 @@ public class CoinHandlers extends TelegramLongPollingBot {
         sendMessage.setText(LanguagesService.getString("onCoinNewCommand", language));
 
         DatabaseManager.getInstance().insertCoinState(userId, chatId, NEWCOININFO);
+        return sendMessage;
+    }
+	
+	private static SendMessage onNews(Long chatId, Integer userId, Integer messageId, String language) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(chatId.toString());
+        sendMessage.setReplyToMessageId(messageId);
+        sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
+        String url = "https://t.co/4HIiSgmKpD";
+        sendMessage.setText(LanguagesService.getString("newsInfo", language)+"\n "+url);
+
+        DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
         return sendMessage;
     }
 	
@@ -248,6 +263,7 @@ public class CoinHandlers extends TelegramLongPollingBot {
 
             row = new KeyboardRow();
         }
+        row.add(getNews(language));
         row.add(getCancelCommand(language));
         keyboard.add(row);
 
@@ -480,9 +496,15 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	private static String getCoinCommand(String language) {
 		return LanguagesService.getString("coin", language);
 	}
+	
 	private static String getNewCommand(String language) {
 		return LanguagesService.getString("new", language);
 	}
+	
+	private static String getNews(String language) {
+		return LanguagesService.getString("news", language);
+	}
+	
 	private static String getSettingsMessage(String language) {
 		String baseString = LanguagesService.getString("onSettingsCommand", language);
 		return baseString;
