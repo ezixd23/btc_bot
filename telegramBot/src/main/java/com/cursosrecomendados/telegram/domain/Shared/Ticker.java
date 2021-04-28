@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.Map;
 
 @Data
@@ -45,7 +46,13 @@ public class Ticker {
 	
 	public String toString() {
 		return "Ticker [base=" + base + ", target=" + target + ", last=" + last + ", volume="
-				+ volume + ", bidAskSpreadPercentage=" + bidAskSpreadPercentage + ", timestamp=" + timestamp + "]";
+				+ volume + ", bidAskSpreadPercentage=" + bidAskSpreadPercentage + ", timestamp=" + lastFetchAt + "]";
+	}
+	public String getLastFetchAt() {
+		return lastFetchAt;
+	}
+	public void setLastFetchAt(String lastFetchAt) {
+		this.lastFetchAt = lastFetchAt;
 	}
 	public String getBase() {
 		return base;
@@ -58,6 +65,12 @@ public class Ticker {
 	}
 	public void setTarget(String target) {
 		this.target = target;
+	}
+	public String getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
     
     

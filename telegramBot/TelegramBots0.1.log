@@ -78,3 +78,18 @@
 	at org.telegram.telegrambots.meta.api.methods.updates.GetUpdates.deserializeResponse(GetUpdates.java:119)
 	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$ReaderThread.getUpdatesFromServer(DefaultBotSession.java:256)
 	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$ReaderThread.run(DefaultBotSession.java:185)
+[28_4_2021_10:26:53] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_10:40:3] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_10:40:11] {SEVERE} CRYPTOHANDLERS - com.cursosrecomendados.telegram.exception.CoinGeckoApiException: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `java.time.Instant` (no Creators, like default constructor, exist): no String-argument constructor/factory method to deserialize from String value ('2021-04-28T08:39:49+00:00')
+ at [Source: (okhttp3.ResponseBody$BomAwareReader); line: 1, column: 375] (through reference chain: com.cursosrecomendados.telegram.domain.Coins.CoinTickerById["tickers"]->java.util.ArrayList[0]->com.cursosrecomendados.telegram.domain.Shared.Ticker["timestamp"])
+	at com.cursosrecomendados.telegram.api.CoinGeckoApi.executeSync(CoinGeckoApi.java:43)
+	at com.cursosrecomendados.telegram.api.CoinGeckoApiClientImpl.getCoinTickerById(CoinGeckoApiClientImpl.java:84)
+	at com.cursosrecomendados.telegram.api.CoinGeckoApiClientImpl.getCoinTickerById(CoinGeckoApiClientImpl.java:79)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onCoinReceived(CoinHandlers.java:381)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onNewCoin(CoinHandlers.java:211)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnCoin(CoinHandlers.java:158)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:113)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:64)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)

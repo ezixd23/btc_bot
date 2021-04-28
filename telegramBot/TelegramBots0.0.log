@@ -660,3 +660,15 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
 [28_4_2021_9:40:22] {INFO} DATABASEMANAGER - Current db version: 0
 [28_4_2021_9:47:30] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_10:20:16] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_11:33:26] {SEVERE} MAIN - org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException: Error removing old webhook
+	at org.telegram.telegrambots.util.WebhookUtils.clearWebhook(WebhookUtils.java:79)
+	at org.telegram.telegrambots.bots.TelegramLongPollingBot.clearWebhook(TelegramLongPollingBot.java:25)
+	at org.telegram.telegrambots.meta.TelegramBotsApi.registerBot(TelegramBotsApi.java:120)
+	at com.cursosrecomendados.telegram.Main.main(Main.java:34)
+[28_4_2021_11:34:29] {SEVERE} MAIN - org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException: Error removing old webhook
+	at org.telegram.telegrambots.util.WebhookUtils.clearWebhook(WebhookUtils.java:79)
+	at org.telegram.telegrambots.bots.TelegramLongPollingBot.clearWebhook(TelegramLongPollingBot.java:25)
+	at org.telegram.telegrambots.meta.TelegramBotsApi.registerBot(TelegramBotsApi.java:120)
+	at com.cursosrecomendados.telegram.Main.main(Main.java:34)
+[28_4_2021_11:43:3] {INFO} DATABASEMANAGER - Current db version: 0
