@@ -646,3 +646,17 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 [21_4_2021_3:32:53] {INFO} DATABASEMANAGER - Current db version: 0
 [21_4_2021_3:34:25] {INFO} DATABASEMANAGER - Current db version: 0
 [21_4_2021_3:38:22] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_1:51:20] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_9:35:30] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_9:36:49] {SEVERE} CRYPTOHANDLERS - org.telegram.telegrambots.meta.exceptions.TelegramApiValidationException: Text parameter can't be empty in method: SendMessage{chatId='1646951096', text='', parseMode='Markdown', disableWebPagePreview=null, replyToMessageId=528, replyMarkup=ReplyKeyboardMarkup{keyboard=[[KeyboardButton{text=Coin, requestContact=null, requestLocation=null}, KeyboardButton{text=Settings, requestContact=null, requestLocation=null}]], resizeKeyboard=true, oneTimeKeyboard=false, selective=true}}
+	at org.telegram.telegrambots.meta.api.methods.send.SendMessage.validate(SendMessage.java:183)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.sendMethodRequest(DefaultAbsSender.java:705)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.sendApiMethod(DefaultAbsSender.java:665)
+	at org.telegram.telegrambots.meta.bots.AbsSender.execute(AbsSender.java:47)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:125)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:64)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[28_4_2021_9:40:22] {INFO} DATABASEMANAGER - Current db version: 0
+[28_4_2021_9:47:30] {INFO} DATABASEMANAGER - Current db version: 0

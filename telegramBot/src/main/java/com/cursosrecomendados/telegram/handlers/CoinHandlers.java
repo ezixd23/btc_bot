@@ -18,9 +18,13 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.logging.BotLogger;
 
+import com.cursosrecomendados.telegram.api.CoinGeckoApiClient;
+import com.cursosrecomendados.telegram.api.CoinGeckoApiClientImpl;
 import com.cursosrecomendados.telegram.configuration.BotConfig;
 import com.cursosrecomendados.telegram.configuration.Commands;
 import com.cursosrecomendados.telegram.database.DatabaseManager;
+import com.cursosrecomendados.telegram.domain.Coins.CoinTickerById;
+import com.cursosrecomendados.telegram.domain.Shared.Ticker;
 import com.cursosrecomendados.telegram.mappers.PriceInfoConverter;
 import com.cursosrecomendados.telegram.model.OrderBook;
 import com.cursosrecomendados.telegram.model.PoloniexPair;
@@ -74,18 +78,19 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	public String getBotToken() {
 		return BotConfig.CRYPTO_TOKEN;
 	}
-	
-    private static SendMessage onCancelCommand(Long chatId, Integer userId, Integer messageId, ReplyKeyboard replyKeyboard, String language) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId.toString());
-        sendMessage.enableMarkdown(true);
-        sendMessage.setReplyToMessageId(messageId);
-        sendMessage.setReplyMarkup(replyKeyboard);
-        sendMessage.setText(LanguagesService.getString("backToMainMenu", language));
 
-        DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
-        return sendMessage;
-    }
+	private static SendMessage onCancelCommand(Long chatId, Integer userId, Integer messageId,
+			ReplyKeyboard replyKeyboard, String language) {
+		SendMessage sendMessage = new SendMessage();
+		sendMessage.setChatId(chatId.toString());
+		sendMessage.enableMarkdown(true);
+		sendMessage.setReplyToMessageId(messageId);
+		sendMessage.setReplyMarkup(replyKeyboard);
+		sendMessage.setText(LanguagesService.getString("backToMainMenu", language));
+
+		DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
+		return sendMessage;
+	}
 
 	private synchronized void handleIncomingMessage(Message message) throws TelegramApiException {
 		final int state = DatabaseManager.getInstance().getCoinState(message.getFrom().getId(), message.getChatId());
@@ -144,60 +149,63 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	}
 
 	private static SendMessage messageOnCoin(Message message, String language, int state) {
-		 SendMessage sendMessageRequest = null;
-	        switch(state) {
-	        case COININFO:
-	        	sendMessageRequest = onCoin(message, language);
-	        	break;
-	        case NEWCOININFO:
-	        	sendMessageRequest = onNewCoin(message, language);
-	        	break;
-	        }
+		SendMessage sendMessageRequest = null;
+		switch (state) {
+		case COININFO:
+			sendMessageRequest = onCoin(message, language);
+			break;
+		case NEWCOININFO:
+			sendMessageRequest = onNewCoin(message, language);
+			break;
+		}
 		return sendMessageRequest;
 	}
-	
+
 	private static SendMessage onCoin(Message message, String language) {
-        SendMessage sendMessageRequest = null;
-        if (message.hasText()) {
-            if (message.getText().equals(getNewCommand(language))) {
-                sendMessageRequest = onNewForecastWeatherCommand(message.getChatId(), message.getFrom().getId(), message.getMessageId(), language);
-            }else if(message.getText().equals(getNews(language))) {
-            	sendMessageRequest = onNews(message.getChatId(), message.getFrom().getId(), message.getMessageId(), language);
-            }else{
-                sendMessageRequest = onCancelCommand(message.getChatId(), message.getFrom().getId(), message.getMessageId(),
-                        getMainMenuKeyboard(language), language);
-            }
-        }
-        return sendMessageRequest;
-    }
-	
-	private static SendMessage onNewForecastWeatherCommand(Long chatId, Integer userId, Integer messageId, String language) {
-        ForceReplyKeyboard forceReplyKeyboard = getForceReply();
+		SendMessage sendMessageRequest = null;
+		if (message.hasText()) {
+			if (message.getText().equals(getNewCommand(language))) {
+				sendMessageRequest = onNewForecastWeatherCommand(message.getChatId(), message.getFrom().getId(),
+						message.getMessageId(), language);
+			} else if (message.getText().equals(getNews(language))) {
+				sendMessageRequest = onNews(message.getChatId(), message.getFrom().getId(), message.getMessageId(),
+						language);
+			} else {
+				sendMessageRequest = onCancelCommand(message.getChatId(), message.getFrom().getId(),
+						message.getMessageId(), getMainMenuKeyboard(language), language);
+			}
+		}
+		return sendMessageRequest;
+	}
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId.toString());
-        sendMessage.setReplyToMessageId(messageId);
-        sendMessage.setReplyMarkup(forceReplyKeyboard);
-        sendMessage.setText(LanguagesService.getString("onCoinNewCommand", language));
+	private static SendMessage onNewForecastWeatherCommand(Long chatId, Integer userId, Integer messageId,
+			String language) {
+		ForceReplyKeyboard forceReplyKeyboard = getForceReply();
 
-        DatabaseManager.getInstance().insertCoinState(userId, chatId, NEWCOININFO);
-        return sendMessage;
-    }
-	
+		SendMessage sendMessage = new SendMessage();
+		sendMessage.enableMarkdown(true);
+		sendMessage.setChatId(chatId.toString());
+		sendMessage.setReplyToMessageId(messageId);
+		sendMessage.setReplyMarkup(forceReplyKeyboard);
+		sendMessage.setText(LanguagesService.getString("onCoinNewCommand", language));
+
+		DatabaseManager.getInstance().insertCoinState(userId, chatId, NEWCOININFO);
+		return sendMessage;
+	}
+
 	private static SendMessage onNews(Long chatId, Integer userId, Integer messageId, String language) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(chatId.toString());
-        sendMessage.setReplyToMessageId(messageId);
-        sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
-        String url = "https://t.co/4HIiSgmKpD";
-        sendMessage.setText(LanguagesService.getString("newsInfo", language)+"\n "+url);
+		SendMessage sendMessage = new SendMessage();
+		sendMessage.enableMarkdown(true);
+		sendMessage.setChatId(chatId.toString());
+		sendMessage.setReplyToMessageId(messageId);
+		sendMessage.setReplyMarkup(getMainMenuKeyboard(language));
+		String url = "https://t.co/4HIiSgmKpD";
+		sendMessage.setText(LanguagesService.getString("newsInfo", language) + "\n " + url);
 
-        DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
-        return sendMessage;
-    }
-	
+		DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
+		return sendMessage;
+	}
+
 	private static SendMessage onNewCoin(Message message, String language) {
 		if (message.isReply()) {
 			return onCoinReceived(message.getChatId(), message.getFrom().getId(), message.getMessageId(),
@@ -240,38 +248,38 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	}
 
 	private static ReplyKeyboardMarkup getRecentsKeyboard(Integer userId, String language) {
-        return getRecentsKeyboard(userId, language, true);
-    }
-	
+		return getRecentsKeyboard(userId, language, true);
+	}
+
 	private static ReplyKeyboardMarkup getRecentsKeyboard(Integer userId, String language, boolean allowNew) {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-        replyKeyboardMarkup.setSelective(true);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(true);
+		ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+		replyKeyboardMarkup.setSelective(true);
+		replyKeyboardMarkup.setResizeKeyboard(true);
+		replyKeyboardMarkup.setOneTimeKeyboard(true);
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        for (String recentCoin : DatabaseManager.getInstance().getRecentCoin(userId)) {
-            KeyboardRow row = new KeyboardRow();
-            row.add(recentCoin);
-            keyboard.add(row);
-        }
+		List<KeyboardRow> keyboard = new ArrayList<>();
+		for (String recentCoin : DatabaseManager.getInstance().getRecentCoin(userId)) {
+			KeyboardRow row = new KeyboardRow();
+			row.add(recentCoin);
+			keyboard.add(row);
+		}
 
-        KeyboardRow row = new KeyboardRow();
-        if (allowNew) {
-            row.add(getNewCommand(language));
-            keyboard.add(row);
+		KeyboardRow row = new KeyboardRow();
+		if (allowNew) {
+			row.add(getNewCommand(language));
+			keyboard.add(row);
 
-            row = new KeyboardRow();
-        }
-        row.add(getNews(language));
-        row.add(getCancelCommand(language));
-        keyboard.add(row);
+			row = new KeyboardRow();
+		}
+		row.add(getNews(language));
+		row.add(getCancelCommand(language));
+		keyboard.add(row);
 
-        replyKeyboardMarkup.setKeyboard(keyboard);
+		replyKeyboardMarkup.setKeyboard(keyboard);
 
-        return replyKeyboardMarkup;
-    }
-	
+		return replyKeyboardMarkup;
+	}
+
 	private static ReplyKeyboardMarkup getLanguagesKeyboard(String language) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 		replyKeyboardMarkup.setSelective(true);
@@ -293,16 +301,16 @@ public class CoinHandlers extends TelegramLongPollingBot {
 
 		return replyKeyboardMarkup;
 	}
-	
-	 private static ForceReplyKeyboard getForceReply() {
-	        ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
-	        forceReplyKeyboard.setSelective(true);
-	        return forceReplyKeyboard;
-	    }
+
+	private static ForceReplyKeyboard getForceReply() {
+		ForceReplyKeyboard forceReplyKeyboard = new ForceReplyKeyboard();
+		forceReplyKeyboard.setSelective(true);
+		return forceReplyKeyboard;
+	}
 
 	private static SendMessage sendMessageDefault(Message message, String language) {
 		ReplyKeyboardMarkup replyKeyboardMarkup = getMainMenuKeyboard(language);
-		DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(), 1);
+		DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(), MAINMENU);
 		return sendHelpMessage(message.getChatId(), message.getMessageId(), replyKeyboardMarkup, language);
 	}
 
@@ -347,37 +355,46 @@ public class CoinHandlers extends TelegramLongPollingBot {
 		sendMessage.setReplyMarkup(replyKeyboardMarkup);
 		sendMessage.setReplyToMessageId(message.getMessageId());
 		sendMessage.setChatId(message.getChatId());
-		
+
 		sendMessage.setText(LanguagesService.getString("onCoinInfo", language));
-		
-		DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(),
-				COININFO);
+
+		DatabaseManager.getInstance().insertCoinState(message.getFrom().getId(), message.getChatId(), COININFO);
 		return sendMessage;
 	}
 
 	private static SendMessage onCoinReceived(Long chatId, Integer userId, Integer messageId, String text,
 			String language) {
-		PoloniexPair valor = null;
+		/*
+		 * PoloniexPair valor = null; try { valor = PoloniexPair.valueOf(text); } catch
+		 * (Exception e) { valor = PoloniexPair.BTC_LTC; }
+		 * 
+		 * OrderBook coin = poloniex.getOrderBook(valor); // TODO // Aqui has de
+		 * covertir OrderBook en PriceInfo, guardar el PriceInfo a la Base // de dades i
+		 * retornar el // valor PriceInfo priceInfo = converter.convert(valor, coin);
+		 */
+		CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
+		String[] coin = text.split(", ");
+		CoinTickerById bitcoinTicker = null;
 		try {
-			valor = PoloniexPair.valueOf(text);
+			bitcoinTicker = client.getCoinTickerById(coin[0].toLowerCase());
 		} catch (Exception e) {
-			valor = PoloniexPair.BTC_LTC;
+			bitcoinTicker = client.getCoinTickerById("bitcoin");
+			coin[1] = "USD";
 		}
-
-		OrderBook coin = poloniex.getOrderBook(valor);
-		// TODO
-		// Aqui has de covertir OrderBook en PriceInfo, guardar el PriceInfo a la Base
-		// de dades i retornar el
-		// valor
-		PriceInfo priceInfo = converter.convert(valor, coin);
+		String cadena = "";
+		for (Ticker ticker : bitcoinTicker.getTickers()) {
+			if (ticker.getTarget().equals(coin[1].toUpperCase())) {
+				cadena = ticker.toString();
+			}
+		}
 
 		SendMessage sendMessageRequest = new SendMessage();
 		sendMessageRequest.enableMarkdown(true);
 		sendMessageRequest.setReplyMarkup(getMainMenuKeyboard(language));
 		sendMessageRequest.setReplyToMessageId(messageId);
-		sendMessageRequest.setText(priceInfo.toString());
+		sendMessageRequest.setText(cadena);
 		sendMessageRequest.setChatId(chatId.toString());
-		DatabaseManager.getInstance().insertCoinState(userId, chatId, 1);
+		DatabaseManager.getInstance().insertCoinState(userId, chatId, COININFO);
 		return sendMessageRequest;
 	}
 
@@ -496,15 +513,15 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	private static String getCoinCommand(String language) {
 		return LanguagesService.getString("coin", language);
 	}
-	
+
 	private static String getNewCommand(String language) {
 		return LanguagesService.getString("new", language);
 	}
-	
+
 	private static String getNews(String language) {
 		return LanguagesService.getString("news", language);
 	}
-	
+
 	private static String getSettingsMessage(String language) {
 		String baseString = LanguagesService.getString("onSettingsCommand", language);
 		return baseString;
