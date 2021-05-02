@@ -23,6 +23,7 @@ import com.cursosrecomendados.telegram.api.CoinGeckoApiClientImpl;
 import com.cursosrecomendados.telegram.configuration.BotConfig;
 import com.cursosrecomendados.telegram.configuration.Commands;
 import com.cursosrecomendados.telegram.database.DatabaseManager;
+import com.cursosrecomendados.telegram.domain.CoinCache;
 import com.cursosrecomendados.telegram.domain.Coins.CoinTickerById;
 import com.cursosrecomendados.telegram.domain.Shared.Ticker;
 import com.cursosrecomendados.telegram.mappers.PriceInfoConverter;
@@ -48,6 +49,7 @@ public class CoinHandlers extends TelegramLongPollingBot {
 
 	@Autowired
 	static PriceInfoConverter converter;
+	
 
 	public CoinHandlers() {
 		super();
@@ -371,7 +373,7 @@ public class CoinHandlers extends TelegramLongPollingBot {
 		 * OrderBook coin = poloniex.getOrderBook(valor); // TODO // Aqui has de
 		 * covertir OrderBook en PriceInfo, guardar el PriceInfo a la Base // de dades i
 		 * retornar el // valor PriceInfo priceInfo = converter.convert(valor, coin);
-		 */
+		 
 		CoinGeckoApiClient client = new CoinGeckoApiClientImpl();
 		String[] coin = text.split(", ");
 		CoinTickerById bitcoinTicker = null;
@@ -387,7 +389,8 @@ public class CoinHandlers extends TelegramLongPollingBot {
 				cadena = ticker.toString();
 			}
 		}
-
+*/
+		String cadena = CoinCache.getValue(text).toString();
 		SendMessage sendMessageRequest = new SendMessage();
 		sendMessageRequest.enableMarkdown(true);
 		sendMessageRequest.setReplyMarkup(getMainMenuKeyboard(language));
