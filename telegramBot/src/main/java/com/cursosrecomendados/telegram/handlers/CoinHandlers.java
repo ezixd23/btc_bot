@@ -50,7 +50,6 @@ public class CoinHandlers extends TelegramLongPollingBot {
 	@Autowired
 	static PriceInfoConverter converter;
 	
-
 	public CoinHandlers() {
 		super();
 		converter = new PriceInfoConverter();
@@ -389,7 +388,8 @@ public class CoinHandlers extends TelegramLongPollingBot {
 				cadena = ticker.toString();
 			}
 		}
-*/
+*/		
+		
 		String cadena = CoinCache.getValue(text).toString();
 		SendMessage sendMessageRequest = new SendMessage();
 		sendMessageRequest.enableMarkdown(true);
@@ -397,7 +397,8 @@ public class CoinHandlers extends TelegramLongPollingBot {
 		sendMessageRequest.setReplyToMessageId(messageId);
 		sendMessageRequest.setText(cadena);
 		sendMessageRequest.setChatId(chatId.toString());
-		DatabaseManager.getInstance().insertCoinState(userId, chatId, COININFO);
+		DatabaseManager.getInstance().addRecentCoin(userId, CoinCache.getValue(text).getBase(), CoinCache.getValue(text).getTarget());
+		DatabaseManager.getInstance().insertCoinState(userId, chatId, MAINMENU);
 		return sendMessageRequest;
 	}
 

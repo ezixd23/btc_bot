@@ -6,7 +6,7 @@ public class CreationTables {
     public static final String insertCurrentVersion = "INSERT INTO Versions (Version) VALUES(%d);";
     
     public static final String createRecentCoinTable = "CREATE TABLE IF NOT EXISTS RecentCoin (ID INTEGER AUTO_INCREMENT, PRIMARY KEY(ID), userId INTEGER NOT NULL, " +
-            "date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, coinId INTEGER NOT NULL, coinName VARCHAR(60) NOT NULL," +
+            "date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, coinId VARCHAR(60) NOT NULL, coinName VARCHAR(60) NOT NULL," +
             "CONSTRAINT unique_cistyuser UNIQUE (userId,coinId))";
     public static final String createUserLanguageDatabase = "CREATE TABLE IF NOT EXISTS UserLanguage (userId INTEGER, PRIMARY KEY(userId), languageCode VARCHAR(10) NOT NULL)";
     public static final String createUserCoinOptionDatabase = "CREATE TABLE IF NOT EXISTS UserCoinOptions (userId INTEGER, PRIMARY KEY(userId), languageCode VARCHAR(10) NOT NULL DEFAULT 'en', " +

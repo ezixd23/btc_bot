@@ -762,3 +762,35 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
 [2_5_2021_16:38:30] {INFO} DATABASEMANAGER - Current db version: 0
 [2_5_2021_16:58:19] {INFO} DATABASEMANAGER - Current db version: 0
+[20_5_2021_15:32:48] {INFO} DATABASEMANAGER - Current db version: 0
+[23_5_2021_17:22:3] {INFO} DATABASEMANAGER - Current db version: 0
+[25_5_2021_12:38:8] {INFO} DATABASEMANAGER - Current db version: 0
+[25_5_2021_12:38:43] {SEVERE} CRYPTOHANDLERS - java.lang.NullPointerException
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onCoinReceived(CoinHandlers.java:396)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onNewCoin(CoinHandlers.java:215)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnCoin(CoinHandlers.java:162)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:117)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:68)
+	at java.util.ArrayList.forEach(ArrayList.java:1259)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[25_5_2021_12:42:8] {INFO} DATABASEMANAGER - Current db version: 0
+[25_5_2021_12:42:9] {SEVERE} MAIN - org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException: Error removing old webhook
+	at org.telegram.telegrambots.util.WebhookUtils.clearWebhook(WebhookUtils.java:79)
+	at org.telegram.telegrambots.bots.TelegramLongPollingBot.clearWebhook(TelegramLongPollingBot.java:25)
+	at org.telegram.telegrambots.meta.TelegramBotsApi.registerBot(TelegramBotsApi.java:120)
+	at com.cursosrecomendados.telegram.Main.main(Main.java:34)
+[25_5_2021_12:43:12] {INFO} DATABASEMANAGER - Current db version: 0
+[25_5_2021_12:51:29] {INFO} DATABASEMANAGER - Current db version: 0
+[25_5_2021_12:59:23] {SEVERE} CRYPTOHANDLERS - java.lang.ArrayIndexOutOfBoundsException: 1
+	at com.cursosrecomendados.telegram.domain.CoinCache.getValueFromCoinGecko(CoinCache.java:53)
+	at com.cursosrecomendados.telegram.domain.CoinCache.getValue(CoinCache.java:32)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onCoinReceived(CoinHandlers.java:393)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onNewCoin(CoinHandlers.java:212)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.messageOnCoin(CoinHandlers.java:159)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.handleIncomingMessage(CoinHandlers.java:114)
+	at com.cursosrecomendados.telegram.handlers.CoinHandlers.onUpdateReceived(CoinHandlers.java:65)
+	at java.util.ArrayList.forEach(ArrayList.java:1259)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:305)
+[25_5_2021_13:1:22] {INFO} DATABASEMANAGER - Current db version: 0

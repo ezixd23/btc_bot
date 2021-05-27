@@ -254,18 +254,18 @@ public class DatabaseManager {
         return updatedRows > 0;
     }
     
-    public boolean addRecentCoin(Integer userId, Integer coinId, String coinName) {
-        int updatedRows = 0;
+    public boolean addRecentCoin(Integer userId, String coinId, String coinName) {
+    	boolean updatedRows = false;
         try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("INSERT INTO RecentCoin (userId, cityId, cityName) VALUES(?, ?, ?)");
+            final PreparedStatement preparedStatement = connetion.getPreparedStatement("INSERT INTO RecentCoin (userId, coinId, coinName) VALUES(?, ?, ?)");
             preparedStatement.setInt(1, userId);
-            preparedStatement.setInt(2, coinId);
+            preparedStatement.setString(2, coinId);
             preparedStatement.setString(3, coinName);
-            updatedRows = preparedStatement.executeUpdate();
+            updatedRows = preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return updatedRows > 0;
+        return updatedRows;
     }
 
     public List<String> getRecentCoin(Integer userId) {

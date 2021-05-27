@@ -18,11 +18,6 @@ public class SpringBootTelegramBot {
     public static void main(String[] args) {
         BotLogger.setLevel(Level.ALL);
         BotLogger.registerLogger(new ConsoleHandler());
-        try {
-            BotLogger.registerLogger(new BotsFileHandler());
-        } catch (IOException e) {
-            BotLogger.severe(LOGTAG, e);
-        }
         SpringApplication.run(SpringBootTelegramBot.class, args);
     }
 }

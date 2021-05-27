@@ -93,7 +93,7 @@ public class ConnectionDB {
                 this.currentConection.rollback();
             }
         } finally {
-            this.currentConection.setAutoCommit(false);
+            this.currentConection.setAutoCommit(true);
         }
     }
 }
