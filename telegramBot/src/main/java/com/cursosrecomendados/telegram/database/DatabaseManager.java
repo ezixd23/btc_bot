@@ -257,7 +257,7 @@ public class DatabaseManager {
     public boolean addRecentCoin(Integer userId, String coinId, String coinName) {
     	boolean updatedRows = false;
         try {
-            final PreparedStatement preparedStatement = connetion.getPreparedStatement("INSERT INTO RecentCoin (userId, coinId, coinName) VALUES(?, ?, ?)");
+            final PreparedStatement preparedStatement = connetion.getPreparedStatement("INSERT INTO RecentCoin (userId, coinId, coinName, date) VALUES(?, ?, ?, CURRENT_TIMESTAMP)");
             preparedStatement.setInt(1, userId);
             preparedStatement.setString(2, coinId);
             preparedStatement.setString(3, coinName);
